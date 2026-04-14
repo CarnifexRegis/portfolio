@@ -9,20 +9,34 @@ export const MobileTimeline = () => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const handleScroll = () => {
-    if (scrollRef.current) {
-      const scrollPosition = scrollRef.current.scrollLeft;
-      const cardWidth = scrollRef.current.offsetWidth * 0.95; // Approximate card width including margins
-      const newIndex = Math.round(scrollPosition / cardWidth);
-      if (newIndex !== activeIndex && newIndex >= 0 && newIndex < experiences.length) {
-        setActiveIndex(newIndex);
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const containerRect = el.getBoundingClientRect();
+    const containerCenter = containerRect.left + containerRect.width / 2;
+
+    const children = Array.from(el.children);
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    children.forEach((child, idx) => {
+      const rect = child.getBoundingClientRect();
+      const childCenter = rect.left + rect.width / 2;
+      const distance = Math.abs(containerCenter - childCenter);
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = idx;
       }
-    }
+    });
+
+    setActiveIndex(closestIndex);
   };
 
   useLayoutEffect(() => {
     const el = scrollRef.current;
     if (el) {
-      el.addEventListener('scroll', handleScroll);
+      el.addEventListener('scroll', handleScroll, { passive: true });
       el.scrollLeft = 30;
       return () => el.removeEventListener('scroll', handleScroll);
     }

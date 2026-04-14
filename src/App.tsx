@@ -2,7 +2,7 @@
 import Hero from './components/sections/Hero';
 import { ImpactStrip } from './components/sections/ImpactStrip';
 import { TimelineExperience } from './components/sections/timeline';
-import { Projects } from './components/sections/Projects';
+import { Projects } from './components/sections/projects/Projects';
 import { Skills } from './components/sections/Skills';
 import { Education } from './components/sections/Education';
 

@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { Card } from '../common/Card';
-import { Badge } from '../common/Badge';
 import { ProjectDetailOverlay } from './ProjectDetailOverlay';
-import { AsyncImage } from '../common/AsyncImage';
+import { DesktopGrid } from './DesktopGrid';
+import { MobileCarousel } from './MobileCarousel';
+import { Project } from './types';
+import { useIsDesktop } from '../../../hooks/useMediaQuery';
 
-import bmwVr from '../../assets/projects/bmw_vr.png';
-import bshAnalytics from '../../assets/projects/bsh_analytics.png';
-import spaceInvader from '../../assets/projects/SpaceInvader.jpg';
+import bmwVr from '../../../assets/projects/bmw_vr.png';
+import bshAnalytics from '../../../assets/projects/bsh_analytics.png';
+import spaceInvader from '../../../assets/projects/SpaceInvader.jpg';
 
-const projects = [
+const projects: Project[] = [
   {
     title: `'Impossible Battery' Virtual Training Prototype`,
     context: "BMW Manufacturing Co.",
@@ -41,55 +42,26 @@ const projects = [
       url: "https://ase.in.tum.de/lehrstuhl_1/component/content/article/153-teaching/wt2122/1200-ipraktikum-ws202122.html"
     },
     image: bshAnalytics,
-
   }
 ];
 
 export const Projects = () => {
-  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const isDesktop = useIsDesktop();
 
   return (
-    <section id="projects" className="py-12 md:py-24 bg-bg px-6 border-y border-primary/10">
+    <section id="projects" className="py-12 md:py-24 bg-bg px-6 border-y border-primary/10 relative overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl font-bold text-text mb-12 flex items-center gap-4">
           Featured Work
           <div className="h-px flex-1 bg-primary/10"></div>
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, idx) => (
-            <div
-              key={idx}
-              className="group cursor-pointer"
-              onClick={() => setSelectedProject(project)}
-            >
-              <Card className="flex flex-col h-full overflow-hidden border-transparent hover:border-primary/20 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 bg-card/50 backdrop-blur-sm p-0">
-                {/* Image Section */}
-                <div className="relative overflow-hidden">
-                  <AsyncImage
-                    src={project.image}
-                    alt={project.title}
-                    className="transition-transform duration-700 group-hover:scale-105"
-                  />
-
-                  {/* Floating Context Badge */}
-                  <div className="absolute top-4 left-4 z-10">
-                    <Badge variant="secondary" className="bg-bg/80 backdrop-blur-md border-primary/10">
-                      {project.context}
-                    </Badge>
-                  </div>
-                </div>
-
-                {/* Content Section */}
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-text group-hover:text-primary transition-colors line-clamp-2">
-                    {project.title}
-                  </h3>
-                </div>
-              </Card>
-            </div>
-          ))}
-        </div>
+        {isDesktop ? (
+          <DesktopGrid projects={projects} onProjectSelect={setSelectedProject} />
+        ) : (
+          <MobileCarousel projects={projects} onProjectSelect={setSelectedProject} />
+        )}
       </div>
 
       <ProjectDetailOverlay

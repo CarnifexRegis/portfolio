@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { X, ExternalLink } from 'lucide-react';
-import { Badge } from '../common/Badge';
+import { Badge } from '../../common/Badge';
 
 interface Project {
   title: string;
