@@ -46,3 +46,4 @@ packages/react-devtools-timeline/dis
 *.txt
 *.md
 *.pdf
+*.tsbuildinfo
