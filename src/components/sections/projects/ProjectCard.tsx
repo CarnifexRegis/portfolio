@@ -16,9 +16,12 @@ export const ProjectCard = ({ project, onClick, className = "", isCarousel = fal
       className={`group cursor-pointer ${isCarousel ? 'shrink-0 w-[85vw] snap-center md:snap-align-none md:w-auto' : ''} ${className}`}
       onClick={() => onClick(project)}
     >
-      <Card className="flex flex-col h-full overflow-hidden border-transparent hover:border-primary/20 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 bg-card/50 backdrop-blur-sm p-0">
+      <Card 
+        noPadding 
+        className="flex flex-col h-full overflow-hidden border-transparent hover:border-primary/20 transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5 bg-card/50 backdrop-blur-sm"
+      >
         {/* Image Section */}
-        <div className="relative overflow-hidden aspect-video">
+        <div className="relative overflow-hidden aspect-video w-full">
           <AsyncImage
             src={project.image}
             alt={project.title}
